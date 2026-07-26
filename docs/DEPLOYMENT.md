@@ -19,25 +19,31 @@ VERCEL — beta/production (static SPA + CDN)
 
 Environments: **local dev** = `npm run dev` (no gate, authoring tool on) · **beta** = Vercel production deployment of `main` with `VITE_BETA_CODE` set (gate on, authoring off) · **preview** = Vercel automatically builds every non-main branch/PR into a unique preview URL — use branches for risky changes. A separate "production" (public) environment is simply this same project later with `VITE_BETA_CODE` removed and the `noindex` meta dropped from `index.html`.
 
-## One-time setup (manual actions)
+## One-time setup — minimal "friends & family" mode (current default)
+
+No accounts beyond GitHub + Vercel. Feedback arrives as **normal emails**: the in-app
+Send Feedback button opens the tester's email app pre-filled with their report plus
+the page, version and browser.
 
 1. **GitHub**: create a **private** repository (e.g. `meal-plan-builder`). Locally the repo is already initialised and committed; connect and push:
    ```bash
    git remote add origin https://github.com/<you>/meal-plan-builder.git
    git push -u origin main
    ```
-2. **Formspree** (feedback destination): create a free account at formspree.io → New form → copy the endpoint URL (`https://formspree.io/f/xxxxxxx`). Free tier ≈50 submissions/month; upgrade only if feedback volume demands it.
-3. **Vercel**: sign up with your GitHub account at vercel.com → **Add New → Project** → import the repo. Framework preset: **Vite** (auto-detected). Build command `npm run build`, output directory `dist` (defaults are correct).
-4. **Environment variables** (Vercel → Project → Settings → Environment Variables, apply to Production + Preview):
+2. **Vercel**: sign up with your GitHub account at vercel.com → **Add New → Project** → import the repo. Framework preset: **Vite** (auto-detected). Build command `npm run build`, output directory `dist` (defaults are correct).
+3. **One environment variable** (Vercel → Project → Settings → Environment Variables → Production + Preview):
    | Name | Value | Purpose |
    |---|---|---|
-   | `VITE_BETA_CODE` | e.g. `fuel-beta-2026` | Beta access gate (omit to disable) |
-   | `VITE_FEEDBACK_ENDPOINT` | your Formspree URL | Feedback + auto-error reports |
-   | `VITE_FEEDBACK_EMAIL` | your email | Fallback shown if sending fails |
-   Note: `VITE_*` values are compiled into the public bundle — never put real secrets in them. The only true secret in this project's future is `FDC_API_KEY`, which stays server-side (not needed for the beta; the FDC provider stays dormant without its proxy).
-5. **Deploy**: Vercel builds automatically after import → you get `https://<project>.vercel.app`.
-6. **Analytics**: Vercel → Project → Analytics → Enable **Web Analytics** (cookieless, GDPR-friendly). No code change needed for basic page/visitor metrics.
-7. Optional **domain**: Vercel → Settings → Domains → add e.g. `beta.yourdomain.com` and follow the DNS instructions.
+   | `VITE_FEEDBACK_EMAIL` | your email address | Send Feedback opens a pre-filled email to you |
+   Optional extras: `VITE_BETA_CODE` (adds the access-code screen — probably unnecessary for a few friends; the URL is unlisted and `noindex`ed). Note: `VITE_*` values are compiled into the public bundle — never put real secrets in them.
+4. **Deploy**: Vercel builds automatically after import → share `https://<project>.vercel.app` with your friends.
+5. Optional: enable **Web Analytics** (Vercel → Analytics tab, cookieless) and/or a custom domain (Settings → Domains).
+
+### Upgrading later to structured feedback (when you outgrow email)
+
+Create a free form at formspree.io and set `VITE_FEEDBACK_ENDPOINT` to its URL → feedback
+submits in-app instead of via email, and throttled automatic **crash reports** switch on
+(they need the endpoint; the email mode carries user feedback only). Nothing else changes.
 
 ## Deploying an update
 

@@ -136,13 +136,21 @@ export function FeedbackWidget() {
                 </p>
               )}
               {!ENDPOINT && FALLBACK_EMAIL ? (
-                <p className="text-sm text-ink-300">
-                  Email your feedback to{' '}
-                  <a className="underline text-volt-300" href={`mailto:${FALLBACK_EMAIL}?subject=Meal Plan Builder beta v${__APP_VERSION__} feedback`}>
-                    {FALLBACK_EMAIL}
+                <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
+                  <button type="button" className="btn-ghost" onClick={() => setOpen(false)}>Cancel</button>
+                  <a
+                    className={`btn-primary ${description.trim() ? '' : 'pointer-events-none opacity-40'}`}
+                    href={`mailto:${FALLBACK_EMAIL}?subject=${encodeURIComponent(
+                      `[Beta v${__APP_VERSION__}] ${category} — Meal Plan Builder`,
+                    )}&body=${encodeURIComponent(
+                      `${description.trim()}\n\n—\nPage: ${window.location.hash || '#planner'}\nVersion: v${__APP_VERSION__}\nBrowser: ${navigator.userAgent}`,
+                    )}`}
+                    onClick={() => setStatus('sent')}
+                  >
+                    <Send className="h-4 w-4" aria-hidden="true" />
+                    Open email to send
                   </a>
-                  .
-                </p>
+                </div>
               ) : (
                 <div className="flex justify-end gap-2">
                   <button type="button" className="btn-ghost" onClick={() => setOpen(false)}>Cancel</button>
