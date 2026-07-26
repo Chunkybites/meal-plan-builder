@@ -1,0 +1,25 @@
+# Dependencies / build output
+node_modules/
+dist/
+
+# Environment — never commit real keys
+.env
+.env.local
+.env.*.local
+
+# Raw data sources (large binaries; not needed for the build — the importer
+# regenerates src/data/generated from them). The GENERATED CoFID JSON *is*
+# committed: it is required at build time and CoFID's OGL v3.0 licence permits
+# redistribution with attribution (see docs/food-data-sources.md).
+data-sources/
+
+# Local scratch / reports
+migrate.txt
+m*.txt
+
+# Editor & OS noise
+.DS_Store
+Thumbs.db
+*.local
+.vscode/
+.idea/
